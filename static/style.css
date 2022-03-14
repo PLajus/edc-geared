@@ -11,3 +11,6 @@ body {
 nav {
   background-color: rgb(24, 24, 24);
 }
+a.nav-link:link {
+  text-decoration: none;
+}
