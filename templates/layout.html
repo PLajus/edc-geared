@@ -12,6 +12,12 @@
       crossorigin="anonymous"
     />
 
+    <link
+      href="{{ url_for('static', filename='style.css')}}"
+      rel="stylesheet"
+      type="text/css"
+    />
+
     {% if title %}
     <title>{{ title }} | EDC Geared</title>
     {% else %}
@@ -19,7 +25,67 @@
     {% endif %}
   </head>
   <body>
-    <div class="container">{% block content %}{% endblock %}</div>
+    <header>
+      <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container-fluid">
+          <a class="navbar-brand me-5" href="{{ url_for('index') }}"
+            >EDC Geared</a
+          >
+          <button
+            class="navbar-toggler"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+          >
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mx-auto mb-3 mb-lg-0">
+              <li class="nav-item ms-5">
+                <a class="nav-link active" aria-current="page" href="#">News</a>
+              </li>
+              <li class="nav-item mx-2">
+                <a class="nav-link" href="#">Reviews</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#">Best Gear</a>
+              </li>
+            </ul>
+            <!-- TODO: fix icon -->
+            <!-- <ul class="nav navbar-nav navbar-right me-3 mb-3 mb-lg-0">
+              <li>
+                <a href="#"><span class="" aria-hidden="true"></span> Login</a>
+              </li>
+            </ul> -->
+            <form class="d-flex">
+              <input
+                class="form-control me-2"
+                type="search"
+                placeholder="Search"
+                aria-label="Search"
+              />
+              <button class="btn btn-outline-light" type="submit">
+                Search
+              </button>
+            </form>
+          </div>
+        </div>
+      </nav>
+    </header>
+    <main role="main" class="container">
+      <div class="row">
+        <div class="col-md-8">
+      {% with messages = get_flashed_messages(with_categories=true) %} 
+      {% if messages %} 
+      {% for category, message in messages %}
+      <div class="alert alert-{{ category }}">{{ message }}</div>
+      {% endfor %} {% endif %} {% endwith %} {% block content %}{% endblock %}
+        </div>
+      </div>
+    </div>
     <script
       src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
       integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
