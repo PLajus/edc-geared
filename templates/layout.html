@@ -18,6 +18,8 @@
       type="text/css"
     />
 
+    <link rel="stylesheet" href="https://formden.com/static/cdn/font-awesome/4.4.0/css/font-awesome.min.css" />
+
     {% if title %}
     <title>{{ title }} | EDC Geared</title>
     {% else %}
@@ -28,7 +30,7 @@
     <header>
       <nav class="navbar navbar-expand-lg navbar-dark">
         <div class="container-fluid">
-          <a class="navbar-brand me-5" href="{{ url_for('index') }}"
+          <a class="navbar-brand" href="{{ url_for('index') }}"
             >EDC Geared</a
           >
           <button
@@ -44,7 +46,7 @@
           </button>
           <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mx-auto mb-3 mb-lg-0">
-              <li class="nav-item ms-5">
+              <li class="nav-item">
                 <a class="nav-link active" aria-current="page" href="#">News</a>
               </li>
               <li class="nav-item mx-2">
@@ -54,12 +56,13 @@
                 <a class="nav-link" href="#">Best Gear</a>
               </li>
             </ul>
-            <!-- TODO: fix icon -->
-            <!-- <ul class="nav navbar-nav navbar-right me-3 mb-3 mb-lg-0">
+            <ul class="nav navbar-nav navbar-right me-3 mb-3 mb-lg-0">
               <li>
-                <a href="#"><span class="" aria-hidden="true"></span> Login</a>
+                <a class="nav-link" :link href="login"><span class="" aria-hidden="true"></span>
+                  <i class="fa fa-user fa-lg">
+                </i></a>
               </li>
-            </ul> -->
+            </ul>
             <form class="d-flex">
               <input
                 class="form-control me-2"
@@ -77,13 +80,12 @@
     </header>
     <main role="main" class="container">
       <div class="row">
-        <div class="col-md-8">
       {% with messages = get_flashed_messages(with_categories=true) %} 
       {% if messages %} 
       {% for category, message in messages %}
       <div class="alert alert-{{ category }}">{{ message }}</div>
-      {% endfor %} {% endif %} {% endwith %} {% block content %}{% endblock %}
-        </div>
+      {% endfor %} {% endif %} {% endwith %} 
+      {% block content %}{% endblock %}
       </div>
     </div>
     <script
