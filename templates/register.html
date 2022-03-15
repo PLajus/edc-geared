@@ -5,6 +5,17 @@
     <fieldset class="form-group">
       <legend class="border-bottom mb-3">Join EDC Geared!</legend>
       <div class="form-group mb-2">
+        {{ form.username.label(class="form-control-label") }} {% if
+        form.username.errors %} {{ form.username(class="form-control
+        is-invalid") }}
+        <div class="invalid-feedback">
+          {% for error in form.username.errors %}
+          <span>{{error}}</span>
+          {% endfor %}
+        </div>
+        {% else %} {{form.username(class="form-control")}} {% endif %}
+      </div>
+      <div class="form-group mb-2">
         {{ form.email.label(class="form-control-label") }} {% if
         form.email.errors %} {{ form.email(class="form-control is-invalid") }}
         <div class="invalid-feedback">
@@ -13,6 +24,28 @@
           {% endfor %}
         </div>
         {% else %} {{form.email(class="form-control")}} {% endif %}
+      </div>
+      <div class="form-group mb-2">
+        {{ form.first_name.label(class="form-control-label") }} {% if
+        form.first_name.errors %} {{ form.first_name(class="form-control
+        is-invalid") }}
+        <div class="invalid-feedback">
+          {% for error in form.first_name.errors %}
+          <span>{{error}}</span>
+          {% endfor %}
+        </div>
+        {% else %} {{form.first_name(class="form-control")}} {% endif %}
+      </div>
+      <div class="form-group mb-2">
+        {{ form.last_name.label(class="form-control-label") }} {% if
+        form.last_name.errors %} {{ form.last_name(class="form-control
+        is-invalid") }}
+        <div class="invalid-feedback">
+          {% for error in form.last_name.errors %}
+          <span>{{error}}</span>
+          {% endfor %}
+        </div>
+        {% else %} {{form.last_name(class="form-control")}} {% endif %}
       </div>
       <div class="form-group mb-2">
         {{ form.password.label(class="form-control-label")}}{% if
