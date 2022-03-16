@@ -5,17 +5,6 @@
     <fieldset class="form-group">
       <legend class="border-bottom mb-3">Join EDC Geared!</legend>
       <div class="form-group mb-2">
-        {{ form.username.label(class="form-control-label") }} {% if
-        form.username.errors %} {{ form.username(class="form-control
-        is-invalid") }}
-        <div class="invalid-feedback">
-          {% for error in form.username.errors %}
-          <span>{{error}}</span>
-          {% endfor %}
-        </div>
-        {% else %} {{form.username(class="form-control")}} {% endif %}
-      </div>
-      <div class="form-group mb-2">
         {{ form.email.label(class="form-control-label") }} {% if
         form.email.errors %} {{ form.email(class="form-control is-invalid") }}
         <div class="invalid-feedback">
