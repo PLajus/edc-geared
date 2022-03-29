@@ -1,7 +1,16 @@
 from datetime import datetime
-from edcgeared import db
+from edcgeared import db, login_manager
+from flask_login import UserMixin
 
-class User(db.Model):
+@login_manager.user_loader
+def load_user(user_id):
+    """Gets user"""
+
+    return User.query.get(int(user_id))
+
+class User(db.Model, UserMixin):
+    """User DB Model"""
+
     id = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.String(120), nullable=False, unique=True)
     first_name = db.Column(db.String(120), nullable=False)
@@ -18,6 +27,8 @@ Post_Category = db.Table('Post_Category',
     db.Column('category_id', db.Integer, db.ForeignKey('category.id')))
 
 class Post(db.Model):
+    """Post DB Model"""
+
     id = db.Column(db.Integer, primary_key=True)
     author_id = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=False)
     title = db.Column(db.String(120), nullable=False)
@@ -30,6 +41,8 @@ class Post(db.Model):
         return f"<Post: {self.title}, {self.date_posted}>"
 
 class Category(db.Model):
+    """Category DB Model"""
+
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(75), nullable=False)
     slug = db.Column(db.String(120), nullable=False)
