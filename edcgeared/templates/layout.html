@@ -60,14 +60,13 @@
               <li>
                 {% if current_user.is_authenticated %}
                 <a class="nav-link" :link href="settings"><span class="" aria-hidden="true"></span>
-                  <!-- <i class="fa fa-user fa-lg"> -->
-                <!-- </i></a> -->
+                  <i class="fa fa-user fa-lg fa-user-logged-in">
+                </i></a>
                 {% else %}
                 <a class="nav-link" :link href="login"><span class="" aria-hidden="true"></span>
-                  <!-- <i class="fa fa-user fa-lg"> -->
-                    {% endif %}
-                    <i class="fa fa-user fa-lg">
+                  <i class="fa fa-user fa-lg">
                   </i></a>
+                    {% endif %}
               </li>
             </ul>
             <form class="d-flex justify-content-center">

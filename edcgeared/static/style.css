@@ -14,3 +14,16 @@ nav {
 a.nav-link:link {
   text-decoration: none;
 }
+
+h2 {
+  text-align: center;
+}
+
+.abs-center-x {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+}
+i.fa-user-logged-in {
+  color: aquamarine;
+}
