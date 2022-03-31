@@ -1,10 +1,10 @@
 {% extends "layout.html" %} {% block content %}
-<div class="container d-flex justify-content-center text-center">
+<div class="container d-flex justify-content-center row row-cols-2">
   <form method="POST" action="">
     {{ form.hidden_tag() }}
     <fieldset class="form-group">
-      <legend class="border-bottom mb-3">Join EDC Geared!</legend>
-      <div class="form-group mb-2">
+      <legend class="border-bottom mb-3 text-center">Join EDC Geared!</legend>
+      <div class="form-group mb-3">
         {{ form.email.label(class="form-control-label") }} {% if
         form.email.errors %} {{ form.email(class="form-control is-invalid") }}
         <div class="invalid-feedback">
@@ -59,7 +59,7 @@
         {% else %} {{form.confirm_password(class="form-control")}} {% endif %}
       </div>
     </fieldset>
-    <div class="form-group pb-3 pt-3">
+    <div class="form-group pb-3 pt-3 d-flex justify-content-center">
       {{ form.submit(class="btn btn-outline-info")}}
     </div>
   </form>
