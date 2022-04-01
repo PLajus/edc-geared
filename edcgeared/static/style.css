@@ -1,29 +1,45 @@
 body {
-  background-color: black;
-  color: white;
+  background-color: #121212;
+  color: #d7dadc;
 }
 @media screen and (prefers-color-scheme: light) {
   body {
-    background-color: white;
-    color: black;
+    background-color: #d7dadc;
+    color: #121212;
   }
 }
 nav {
-  background-color: rgb(24, 24, 24);
+  background-color: #1a1a1b;
+  margin-bottom: 1rem;
+  border: 2px #222222;
+  border-style: hidden hidden solid hidden;
 }
 a.nav-link:link {
   text-decoration: none;
 }
 
-h2 {
-  text-align: center;
-}
-
-.abs-center-x {
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-}
 i.fa-user-logged-in {
   color: #17a2b8;
+}
+
+.content-section {
+  padding: 10px 20px;
+  background-color: #1a1a1b;
+  border: 1px solid #222222;
+  border-radius: 3px;
+  margin-bottom: 20px;
+}
+
+.account-img {
+  height: 125px;
+  width: 125px;
+  margin-right: 20px;
+  margin-bottom: 16px;
+}
+
+.account-heading {
+  font-size: 2.5rem;
+}
+legend.text-bold {
+  font-weight: bold;
 }

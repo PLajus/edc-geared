@@ -1,5 +1,7 @@
 {% extends "layout.html" %} {% block content %}
-<div class="container d-flex justify-content-center row row-cols-2">
+<div
+  class="container content-section d-flex justify-content-center row row-cols-2"
+>
   <form method="POST" action="">
     {{ form.hidden_tag() }}
     <fieldset class="form-group">
@@ -64,7 +66,7 @@
     </div>
   </form>
 </div>
-<div class="border-top pt-2 text-center">
+<div class="container border-top pt-2 text-center">
   <small class="text-muted">
     Already have an account?
     <a class="ml-2" href="{{ url_for('login') }}">Sign in</a>
