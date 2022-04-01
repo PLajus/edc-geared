@@ -1,8 +1,9 @@
 from flask_wtf import FlaskForm
+from flask_wtf.file import FileField, FileAllowed
+from flask_login import current_user
 from wtforms import StringField, PasswordField, SubmitField, BooleanField
 from wtforms.validators import Email, EqualTo, InputRequired, Length, ValidationError
 from edcgeared.models import User
-
 class RegistrationForm(FlaskForm):
 
     """User registration form"""
@@ -33,4 +34,25 @@ class LoginForm(FlaskForm):
     remember = BooleanField('Remember me')
 
     submit = SubmitField("Sign in")
-    
+
+class UpdateProfileForm(FlaskForm):
+
+    """User account update form"""
+
+    email = StringField('Email', validators=[InputRequired(), Email()])
+
+    first_name = StringField('First name', validators=[InputRequired(), Length(min=1, max=30)])
+    last_name = StringField('Last name', validators=[InputRequired(), Length(min=1, max=30)])
+
+    image = FileField('Update profile image', validators=[FileAllowed(['jpg', 'png'])])
+
+    submit = SubmitField("Save")
+
+    def validate_email(self, email):
+        """Check if email is taken when user changes email"""
+
+        if email.data != current_user.email:
+            user = User.query.filter_by(email=email.data).first()
+            if user:
+                raise ValidationError('Email is already taken.')
+            
