@@ -3,17 +3,14 @@ import secrets
 from PIL import Image
 from flask import render_template, url_for, flash, redirect, request
 from edcgeared import app, db, bcrypt
-from edcgeared.forms import RegistrationForm, LoginForm, UpdateProfileForm
+from edcgeared.forms import RegistrationForm, LoginForm, UpdateProfileForm, PostForm
 import edcgeared.models
 from flask_login import login_user, current_user, logout_user, login_required
 
 @app.route("/")
 def index():
-    return render_template("index.html")
-
-@app.route("/about")
-def about():
-    return render_template("about.html")
+    posts = edcgeared.models.Post.query.all()
+    return render_template("index.html", posts=posts)
 
 @app.route("/news")
 def news():
@@ -27,6 +24,20 @@ def reviews():
 def bestgear():
     return render_template("bestgear.html")
 
+@app.route("/post/new", methods=['GET', 'POST'])
+@login_required
+def new_post():
+    form = PostForm()
+    if form.validate_on_submit():
+        slug = form.title.data.replace(" ", "-").lower()
+        post = edcgeared.models.Post(title=form.title.data, content=form.content.data, author=current_user, slug=slug)
+        db.session.add(post)
+        db.session.commit()
+        flash("Post created!", 'success')
+        return redirect(url_for('index'))
+
+    return render_template("create_post.html", title="New post", form=form)
+
 @app.route("/register", methods=['GET', 'POST'])
 def register():
     """Process register API calls"""
@@ -37,7 +48,6 @@ def register():
     form = RegistrationForm()
 
     if form.validate_on_submit():
-
         hashed_password = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
         user = edcgeared.models.User(first_name=form.first_name.data, last_name=form.last_name.data,
         email=form.email.data, password=hashed_password)
@@ -58,8 +68,8 @@ def login():
 
     form = LoginForm()
 
-    if (request.method == "GET"):
-            return render_template("login.html", title="Sign in", form=form)
+    # if (request.method == "GET"):
+    #         return render_template("login.html", title="Sign in", form=form)
  
     if form.validate_on_submit():
         user = edcgeared.models.User.query.filter_by(email=form.email.data).first()
@@ -72,6 +82,9 @@ def login():
         else:
             flash('Incorrect email or password!', 'danger')
             return render_template("login.html", title="Sign in", form=form)
+
+    elif request.method == "GET":
+        return render_template("login.html", title="Sign in", form=form)  
 
 def save_image(form_image):
     """Save users profile image in the file system"""
@@ -126,3 +139,8 @@ def logout():
 
     logout_user()
     return redirect(url_for('index'))
+
+@app.route("/post/<int:post_id>")
+def post(post_id):
+    post = edcgeared.models.Post.query.get_or_404(post_id)
+    return render_template('post.html', title= post.title, post=post)
