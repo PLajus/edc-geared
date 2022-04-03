@@ -19,6 +19,7 @@
     />
 
     <link rel="stylesheet" href="https://formden.com/static/cdn/font-awesome/4.4.0/css/font-awesome.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
 
     {% if title %}
     <title>{{ title }} | EDC Geared</title>
@@ -57,17 +58,22 @@
               </li>
             </ul>
             <ul class="nav navbar-nav me-3 mb-3 mb-lg-0">
-              <li>
                 {% if current_user.is_authenticated %}
-                <a class="nav-link" :link href="settings"><span class="" aria-hidden="true"></span>
-                  <i class="fa fa-user fa-lg fa-user-logged-in">
-                </i></a>
-                {% else %}
-                <a class="nav-link" :link href="login"><span class="" aria-hidden="true"></span>
-                  <i class="fa fa-user fa-lg">
+                <li>
+                  <a class="nav-link" :link href="{{ url_for('new_post') }}"><span class="" aria-hidden="true"></span>
+                    <i class="fa fa-solid fa-plus">
                   </i></a>
-                    {% endif %}
-              </li>
+                </li>
+                <li>
+                  <a class="nav-link" :link href="{{ url_for('settings') }}"><span class="" aria-hidden="true"></span>
+                    <i class="fa fa-user fa-lg fa-user-logged-in">
+                  </i></a>
+                  {% else %}
+                  <a class="nav-link" :link href="{{ url_for('login') }}"><span class="" aria-hidden="true"></span>
+                    <i class="fa fa-user fa-lg">
+                    </i></a>
+                      {% endif %}
+                </li>
             </ul>
             <form class="d-flex justify-content-center">
               <input
@@ -93,11 +99,26 @@
       {% endfor %} {% endif %} {% endwith %} 
       {% block content %}{% endblock %}
       </div>
+
+      <div class="footer-basic">
+        <footer>
+            <div class="social"><a href="#"><i class="icon ion-social-instagram"></i></a><a href="#"><i class="icon ion-social-twitter"></i></a><a href="#"><i class="icon ion-social-facebook"></i></a></div>
+            <ul class="list-inline">
+                <li class="list-inline-item"><a href="#">Home</a></li>
+                <li class="list-inline-item"><a href="#">Services</a></li>
+                <li class="list-inline-item"><a href="#">About</a></li>
+                <li class="list-inline-item"><a href="#">Terms</a></li>
+                <li class="list-inline-item"><a href="#">Privacy Policy</a></li>
+            </ul>
+            <p class="copyright">EDC Geared © 2022</p>
+        </footer>
     </div>
     <script
       src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
       integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
       crossorigin="anonymous"
     ></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/js/bootstrap.bundle.min.js"></script>
   </body>
 </html>
