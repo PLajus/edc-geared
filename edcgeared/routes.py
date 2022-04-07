@@ -1,7 +1,7 @@
 import os
 import secrets
 from PIL import Image
-from flask import render_template, url_for, flash, redirect, request
+from flask import render_template, url_for, flash, redirect, request, abort
 from edcgeared import app, db, bcrypt
 from edcgeared.forms import RegistrationForm, LoginForm, UpdateProfileForm, PostForm
 import edcgeared.models
@@ -24,19 +24,6 @@ def reviews():
 def bestgear():
     return render_template("bestgear.html")
 
-@app.route("/post/new", methods=['GET', 'POST'])
-@login_required
-def new_post():
-    form = PostForm()
-    if form.validate_on_submit():
-        slug = form.title.data.replace(" ", "-").lower()
-        post = edcgeared.models.Post(title=form.title.data, content=form.content.data, author=current_user, slug=slug)
-        db.session.add(post)
-        db.session.commit()
-        flash("Post created!", 'success')
-        return redirect(url_for('index'))
-
-    return render_template("create_post.html", title="New post", form=form)
 
 @app.route("/register", methods=['GET', 'POST'])
 def register():
@@ -67,9 +54,6 @@ def login():
         return redirect(url_for('index'))
 
     form = LoginForm()
-
-    # if (request.method == "GET"):
-    #         return render_template("login.html", title="Sign in", form=form)
  
     if form.validate_on_submit():
         user = edcgeared.models.User.query.filter_by(email=form.email.data).first()
@@ -136,11 +120,66 @@ def settings():
 @app.route("/logout")
 @login_required
 def logout():
-
     logout_user()
     return redirect(url_for('index'))
+
+@app.route("/post/new", methods=['GET', 'POST'])
+@login_required
+def new_post():
+    form = PostForm()
+
+    if form.validate_on_submit():
+        slug = form.title.data.replace(" ", "-").lower()
+        post = edcgeared.models.Post(title=form.title.data, content=form.content.data, author=current_user, slug=slug)
+        db.session.add(post)
+        db.session.commit()
+        return redirect(url_for('index'))
+
+    return render_template("create_post.html", title="New post", form=form,
+                            legend="New post")
 
 @app.route("/post/<int:post_id>")
 def post(post_id):
     post = edcgeared.models.Post.query.get_or_404(post_id)
-    return render_template('post.html', title= post.title, post=post)
+
+    return render_template('post.html', title=post.title, post=post)
+
+@app.route("/post/<int:post_id>/update", methods=['GET', 'POST'])
+@login_required
+def update_post(post_id):
+    post = edcgeared.models.Post.query.get_or_404(post_id)
+
+    if post.author != current_user:
+        abort(403)
+
+    form = PostForm()
+
+    if form.validate_on_submit():
+        post.title = form.title.data
+        post.content = form.content.data
+        db.session.commit()
+
+        flash("Post updated!", "success")
+        return redirect(url_for('post', post_id=post_id))
+
+    elif request.method == "GET":
+        form.title.data = post.title
+        form.content.data = post.content
+
+    return render_template('create_post.html', title="Update post",
+                            form=form, legend="Update post")
+
+@app.route("/post/<int:post_id>/delete", methods=['POST'])
+@login_required
+def delete_post(post_id):
+    post = edcgeared.models.Post.query.get_or_404(post_id)
+
+    if post.author != current_user:
+        abort(403)
+
+    db.session.delete(post)
+    db.session.commit()
+
+    flash("Post deleted!", 'success')
+    return redirect(url_for('index'))
+
