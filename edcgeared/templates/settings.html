@@ -1,12 +1,12 @@
 {% extends "layout.html" %} {% block content %}
 <body>
   <div class="content-section">
-    <legend class="container text-bold mb-3 text-right d-flex">
+    <legend class="container text-bold mb-3">
       Edit profile
       <span class="">
         <!-- TODO: Fix alignment -->
         <a
-          class="btn btn-outline-danger"
+          class="btn btn-outline-danger logout-btn"
           href="{{ url_for('logout') }}"
           role="button"
           >Sign out</a
@@ -54,8 +54,9 @@
             {% else %} {{form.last_name(class="form-control")}} {% endif %}
           </div>
           <div class="form-group mb-2">
-            {{ form.image.label() }} {{ form.image(class="form-control-file") }}
-            {% if form.image.errors %} {% for error in form.image.errors %}
+            <label> {{ form.image.label() }} </label> <br />
+            {{ form.image(class="form-control-file") }} {% if form.image.errors
+            %} {% for error in form.image.errors %}
             <span class="text-danger"> {{ error }} </span>
             {% endfor %} {% endif %}
           </div>
