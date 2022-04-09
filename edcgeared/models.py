@@ -45,7 +45,6 @@ class Category(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(75), nullable=False)
-    slug = db.Column(db.String(120), nullable=False)
 
     def __repr__(self):
         return f"<Category: {self.title}>"
