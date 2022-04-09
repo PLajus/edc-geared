@@ -9,25 +9,32 @@ from flask_login import login_user, current_user, logout_user, login_required
 
 @app.route("/")
 def index():
+    """Homepage"""
+    
     posts = edcgeared.models.Post.query.all()
+
     return render_template("index.html", posts=posts)
 
 @app.route("/news")
 def news():
+    """News"""
+
     return render_template("news.html")
 
 @app.route("/reviews")
 def reviews():
+    """Reviews"""
     return render_template("reviews.html")
 
 @app.route("/bestgear")
 def bestgear():
+    """Best gear"""
     return render_template("bestgear.html")
 
 
 @app.route("/register", methods=['GET', 'POST'])
 def register():
-    """Process register API calls"""
+    """Registration"""
 
     if current_user.is_authenticated:
         return redirect(url_for('index'))
@@ -38,6 +45,7 @@ def register():
         hashed_password = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
         user = edcgeared.models.User(first_name=form.first_name.data, last_name=form.last_name.data,
         email=form.email.data, password=hashed_password)
+
         db.session.add(user)
         db.session.commit()
 
@@ -48,7 +56,7 @@ def register():
 
 @app.route("/login", methods=['GET', 'POST'])
 def login():
-    """Process log in API calls"""
+    """Log in"""
 
     if current_user.is_authenticated:
         return redirect(url_for('index'))
@@ -89,6 +97,8 @@ def save_image(form_image):
 @app.route("/settings", methods=['GET', 'POST'])
 @login_required
 def settings():
+    """User account settings"""
+
     form = UpdateProfileForm()
 
     if form.validate_on_submit():
@@ -96,11 +106,12 @@ def settings():
             image_file = save_image(form.image.data)
             if current_user.image_file != "default.jpg":
                 os.remove(app.root_path + '/static/profile_images/' + current_user.image_file)
-                current_user.image_file = image_file
-
+            current_user.image_file = image_file
+ 
         current_user.email = form.email.data
         current_user.first_name = form.first_name.data
         current_user.last_name = form.last_name.data
+
         db.session.commit()
 
         flash('Profile updated!', 'success')
@@ -120,19 +131,29 @@ def settings():
 @app.route("/logout")
 @login_required
 def logout():
+    """Log out"""
+
     logout_user()
     return redirect(url_for('index'))
 
 @app.route("/post/new", methods=['GET', 'POST'])
 @login_required
 def new_post():
+    """Create new post"""
+
     form = PostForm()
+
+    form.categories.choices = [(category.id, category.title) for category in edcgeared.models.Category.query.all()]
 
     if form.validate_on_submit():
         slug = form.title.data.replace(" ", "-").lower()
         post = edcgeared.models.Post(title=form.title.data, content=form.content.data, author=current_user, slug=slug)
+        print(form.categories.data)
+        categories = db.session.query(edcgeared.models.Category).filter(edcgeared.models.Category.id.in_((form.categories.data))).all()
+        post.categories = [category for category in categories]
         db.session.add(post)
         db.session.commit()
+
         return redirect(url_for('index'))
 
     return render_template("create_post.html", title="New post", form=form,
@@ -140,13 +161,18 @@ def new_post():
 
 @app.route("/post/<int:post_id>")
 def post(post_id):
+    """Read post"""
+
     post = edcgeared.models.Post.query.get_or_404(post_id)
 
     return render_template('post.html', title=post.title, post=post)
 
+
 @app.route("/post/<int:post_id>/update", methods=['GET', 'POST'])
 @login_required
 def update_post(post_id):
+    """Update post"""
+
     post = edcgeared.models.Post.query.get_or_404(post_id)
 
     if post.author != current_user:
@@ -157,6 +183,8 @@ def update_post(post_id):
     if form.validate_on_submit():
         post.title = form.title.data
         post.content = form.content.data
+        post.categories = form.categories.data
+
         db.session.commit()
 
         flash("Post updated!", "success")
@@ -165,6 +193,7 @@ def update_post(post_id):
     elif request.method == "GET":
         form.title.data = post.title
         form.content.data = post.content
+        form.categories.data = post.categories
 
     return render_template('create_post.html', title="Update post",
                             form=form, legend="Update post")
@@ -172,6 +201,8 @@ def update_post(post_id):
 @app.route("/post/<int:post_id>/delete", methods=['POST'])
 @login_required
 def delete_post(post_id):
+    """Delete post"""
+
     post = edcgeared.models.Post.query.get_or_404(post_id)
 
     if post.author != current_user:

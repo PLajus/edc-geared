@@ -27,6 +27,17 @@
         </div>
         {% else %} {{form.content(class="form-control")}} {% endif %}
       </div>
+      <div class="form-group mb-2">
+        {{ form.categories.label(class="form-control-label")}}{% if
+        form.categories.errors %} {{ form.categories(class="form-control
+        is-invalid") }}
+        <div class="invalid-feedback">
+          {%for error in form.categories.errors%}
+          <span>{{error}}</span>
+          {% endfor %}
+        </div>
+        {% else %} {{form.categories(class="form-control")}} {% endif %}
+      </div>
     </fieldset>
     <div class="form-group pb-3 pt-3 d-flex justify-content-center">
       {{ form.submit(class="btn btn-outline-info")}}
