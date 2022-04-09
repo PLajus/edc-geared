@@ -8,18 +8,14 @@ import edcgeared.models
 from flask_login import login_user, current_user, logout_user, login_required
 
 @app.route("/")
+@app.route("/news")
 def index():
-    """Homepage"""
-    
-    posts = edcgeared.models.Post.query.all()
+    """Index"""
+
+    page = request.args.get('page', 1, type=int)
+    posts = edcgeared.models.Post.query.order_by(edcgeared.models.Post.date_posted.desc()).paginate(page=page, per_page=5)
 
     return render_template("index.html", posts=posts)
-
-@app.route("/news")
-def news():
-    """News"""
-
-    return render_template("news.html")
 
 @app.route("/reviews")
 def reviews():
@@ -214,3 +210,15 @@ def delete_post(post_id):
     flash("Post deleted!", 'success')
     return redirect(url_for('index'))
 
+@app.route("/user/<string:email>")
+def user_posts(email):
+    """User posts"""
+
+    user = edcgeared.models.User.query.filter_by(email=email).first_or_404()
+    page = request.args.get('page', 1, type=int)
+
+    posts = edcgeared.models.Post.query.filter_by(author=user)\
+        .order_by(edcgeared.models.Post.date_posted.desc())\
+        .paginate(page=page, per_page=5)
+
+    return render_template("user_posts.html", posts=posts, user=user)

@@ -1,8 +1,10 @@
 {% extends "layout.html" %} {% block content %}
 <body>
+  <h2 class="mb-3">
+    Posts by {{ user.first_name }} {{ user.last_name}} ({{ posts.total }})
+  </h2>
   {% for post in posts.items %}
   <article class="media content-section">
-    <!-- TODO: Add text for no posts -->
     <div class="article-metadata">
       <img
         class="rounded-circle article-img"
@@ -30,13 +32,15 @@
   {% endfor %} {% for page_num in posts.iter_pages(left_edge=1, right_edge=1,
   left_current=1, right_current=2) %} {% if page_num %} {% if posts.page ==
   page_num %}
-  <a class="btn btn-info mb-2" href="{{ url_for('index', page=page_num) }}"
+  <a
+    class="btn btn-info mb-2"
+    href="{{ url_for('user_posts', email=user.email, page=page_num) }}"
     >{{ page_num }}</a
   >
   {% else %}
   <a
     class="btn btn-outline-info mb-2"
-    href="{{ url_for('index', page=page_num) }}"
+    href="{{ url_for('index', email=user.email, page=page_num) }}"
     >{{ page_num }}</a
   >
   {% endif %} {% else %} ... {% endif %} {% endfor %}
