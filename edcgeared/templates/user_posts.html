@@ -3,7 +3,7 @@
   <h2 class="mb-3">
     Posts by {{ user.first_name }} {{ user.last_name}} ({{ posts.total }})
   </h2>
-  {% for post in posts.items %}
+  {% if posts.items %} {% for post in posts.items %}
   <article class="media content-section article-preview">
     <div class="article-metadata">
       <img
@@ -55,5 +55,12 @@
     >
     {% endif %} {% else %} ... {% endif %} {% endfor %}
   </div>
+  {% else %}
+  <div>
+    <article class="media content-section">
+      <h4>No posts found</h4s>
+    </article>
+  </div>
+  {%endif%}
 </body>
 {% endblock content %}

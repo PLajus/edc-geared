@@ -71,16 +71,17 @@
                   {% else %}
                   <a class="nav-link" :link href="{{ url_for('users.login') }}"><span class="" aria-hidden="true"></span>
                     <i class="fa fa-user fa-lg">
-                    </i>Log in</a>
+                    </i></a>
                       {% endif %}
                 </li>
             </ul>
-            <form class="d-flex justify-content-center" action="{{ url_for('main.search') }}">
+            <form class="d-flex justify-content-center">
               <input
                 class="form-control me-2"
                 type="search"
                 placeholder="Search"
                 aria-label="Search"
+                name="q"
               />
               <button class="btn btn-outline-light" type="submit">
                 Search
