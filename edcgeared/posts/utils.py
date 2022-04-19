@@ -11,7 +11,7 @@ def save_post_image(form_image):
     image_fn = random_hex + f_ext
     image_path = os.path.join(current_app.root_path, 'static/post_images', image_fn)
 
-    output_size = (125, 125)
+    output_size = (1920, 1080)
     resized_image = Image.open(form_image)
     resized_image.thumbnail(output_size)
 

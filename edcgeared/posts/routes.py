@@ -81,7 +81,7 @@ def update_post(post_id):
     elif request.method == "GET":
         form.title.data = post.title
         form.content.data = post.content
-        form.categories.data = post.categories
+        form.categories.data = [category.id for category in post.categories]
 
     return render_template('create_post.html', title="Update post",
                             form=form, legend="Update post")

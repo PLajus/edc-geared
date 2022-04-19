@@ -48,13 +48,13 @@
           <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
             <ul class="navbar-nav mx-auto ms-1 mb-3 mb-lg-0">
               <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="#">News</a>
+                <a class="nav-link active" aria-current="page" href="{{ url_for('main.index') }}">News</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="#">Reviews</a>
+                <a class="nav-link" href="{{ url_for('main.reviews') }}">Reviews</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="#">Best Gear</a>
+                <a class="nav-link" href="{{ url_for('main.bestgear') }}">Best Gear</a>
               </li>
             </ul>
             <ul class="nav navbar-nav me-3 mb-3 mb-lg-0">
@@ -75,7 +75,7 @@
                       {% endif %}
                 </li>
             </ul>
-            <form class="d-flex justify-content-center">
+            <form class="d-flex justify-content-center" action="{{ url_for('main.search') }}">
               <input
                 class="form-control me-2"
                 type="search"
@@ -104,7 +104,7 @@
         <footer>
             <div class="social"><a href="#"><i class="icon ion-social-instagram"></i></a><a href="#"><i class="icon ion-social-twitter"></i></a><a href="#"><i class="icon ion-social-facebook"></i></a></div>
             <ul class="list-inline">
-                <li class="list-inline-item"><a href="#">Home</a></li>
+                <li class="list-inline-item"><a href="{{ url_for('main.index') }}">Home</a></li>
                 <li class="list-inline-item"><a href="#">Services</a></li>
                 <li class="list-inline-item"><a href="#">About</a></li>
                 <li class="list-inline-item"><a href="#">Terms</a></li>

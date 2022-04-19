@@ -19,7 +19,7 @@ a.nav-link:link {
 }
 
 .article-preview {
-  width: min-content;
+  width: fit-content;
   margin-left: 20px;
 }
 
@@ -47,7 +47,7 @@ a.article-title:hover {
 
 .article-content {
   white-space: pre-line;
-  width: min-content;
+  margin-top: 20px;
 }
 
 .article-author-img {
@@ -58,8 +58,8 @@ a.article-title:hover {
 }
 
 .article-img {
-  height: 200px;
-  width: 200px;
+  height: 400px;
+  width: 400px;
   margin-top: 12px;
   margin-bottom: 12px;
 }
@@ -178,6 +178,5 @@ legend.text-bold {
 }
 
 .page-btn {
-  width: min-content;
-  display: block;
+  width: fit-content;
 }
