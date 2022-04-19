@@ -31,7 +31,7 @@
     <header>
       <nav class="navbar navbar-expand-lg navbar-dark">
         <div class="container-fluid">
-          <a class="navbar-brand" href="{{ url_for('index') }}"
+          <a class="navbar-brand" href="{{ url_for('main.index') }}"
             >EDC Geared</a
           >
           <button
@@ -60,16 +60,16 @@
             <ul class="nav navbar-nav me-3 mb-3 mb-lg-0">
                 {% if current_user.is_authenticated %}
                 <li>
-                  <a class="nav-link" :link href="{{ url_for('new_post') }}"><span class="" aria-hidden="true"></span>
+                  <a class="nav-link" :link href="{{ url_for('posts.new_post') }}"><span class="" aria-hidden="true"></span>
                     <i class="fa fa-solid fa-plus">
                   </i></a>
                 </li>
                 <li>
-                  <a class="nav-link" :link href="{{ url_for('settings') }}"><span class="" aria-hidden="true"></span>
+                  <a class="nav-link" :link href="{{ url_for('users.settings') }}"><span class="" aria-hidden="true"></span>
                     <i class="fa fa-user fa-lg fa-user-logged-in">
                   </i></a>
                   {% else %}
-                  <a class="nav-link" :link href="{{ url_for('login') }}"><span class="" aria-hidden="true"></span>
+                  <a class="nav-link" :link href="{{ url_for('users.login') }}"><span class="" aria-hidden="true"></span>
                     <i class="fa fa-user fa-lg">
                     </i></a>
                       {% endif %}

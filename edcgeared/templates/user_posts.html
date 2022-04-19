@@ -4,24 +4,32 @@
     Posts by {{ user.first_name }} {{ user.last_name}} ({{ posts.total }})
   </h2>
   {% for post in posts.items %}
-  <article class="media content-section">
+  <article class="media content-section article-preview">
     <div class="article-metadata">
       <img
-        class="rounded-circle article-img"
+        class="rounded-circle article-author-img"
         src="{{ url_for('static', filename='profile_images/' + post.author.image_file) }}"
       />
       <a
         class="mr-2 article-author"
-        href="{{ url_for('user_posts', email=post.author.email) }}"
+        href="{{ url_for('users.user_posts', email=post.author.email) }}"
         >{{ post.author.first_name }} {{post.author.last_name }}</a
       >
     </div>
     <div class="media-body">
-      <h2>
-        <a class="article-title" href="{{ url_for('post', post_id=post.id) }}"
+      <h4>
+        <a
+          class="article-title"
+          href="{{ url_for('posts.post', post_id=post.id) }}"
           >{{ post.title }}</a
         >
-      </h2>
+      </h4>
+      <div class="media container">
+        <img
+          class="article-img"
+          src="{{ url_for('static', filename='post_images/' + post.image) }}"
+        />
+      </div>
     </div>
     <div class="article-footer">
       <small class="text-muted"
@@ -34,13 +42,13 @@
   page_num %}
   <a
     class="btn btn-info mb-2"
-    href="{{ url_for('user_posts', email=user.email, page=page_num) }}"
+    href="{{ url_for('users.user_posts', email=user.email, page=page_num) }}"
     >{{ page_num }}</a
   >
   {% else %}
   <a
     class="btn btn-outline-info mb-2"
-    href="{{ url_for('index', email=user.email, page=page_num) }}"
+    href="{{ url_for('main.index', email=user.email, page=page_num) }}"
     >{{ page_num }}</a
   >
   {% endif %} {% else %} ... {% endif %} {% endfor %}

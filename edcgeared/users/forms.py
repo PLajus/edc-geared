@@ -1,10 +1,10 @@
 from flask_wtf import FlaskForm
+from wtforms import StringField, SubmitField, PasswordField, BooleanField
 from flask_wtf.file import FileField, FileAllowed
+from wtforms.validators import InputRequired, Email, Length, EqualTo, ValidationError
 from flask_login import current_user
-from wtforms import StringField, PasswordField, SubmitField, BooleanField, TextAreaField, SelectMultipleField
-from wtforms.validators import Email, EqualTo, InputRequired, Length, ValidationError, DataRequired
-import edcgeared
 from edcgeared.models import User
+
 class RegistrationForm(FlaskForm):
 
     """User registration form"""
@@ -58,12 +58,3 @@ class UpdateProfileForm(FlaskForm):
             user = User.query.filter_by(email=email.data).first()
             if user:
                 raise ValidationError('Email is already taken.')
-
-class PostForm(FlaskForm):
-    """Post form"""
-
-    title = StringField('Title', validators=[InputRequired()])
-    content = TextAreaField('Content', validators=[InputRequired()])
-    categories = SelectMultipleField('Categories', coerce=int, choices=[], default=['1'], validators=[DataRequired()])
-
-    submit = SubmitField('Post')
