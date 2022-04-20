@@ -176,3 +176,9 @@ legend.text-bold {
 .logout-btn {
   float: right;
 }
+.modal-content {
+  background-color: #222222;
+}
+small.post-likes {
+  float: right;
+}

@@ -6,7 +6,9 @@
         class="rounded-circle article-author-img"
         src="{{ url_for('static', filename='profile_images/' + post.author.image_file) }}"
       />
-      <a class="article-author" href="#"
+      <a
+        class="article-author"
+        href="{{ url_for('users.user_posts', email=post.author.email) }}"
         >{{ post.author.first_name }} {{post.author.last_name }}</a
       >
       <small class="text-muted" style="float: right"
@@ -19,7 +21,7 @@
       <div style="float: right">
         <a
           class="btn btn-outline-warning btn-sm mt-1 mb-1"
-          href="{{ url_for('posts.update_post', post_id=post.id) }}"
+          href="{{ url_for('posts.update_post', slug=post.slug) }}"
           >Update</a
         >
         <button
@@ -34,6 +36,11 @@
       {% endif %}
       <h2 class="article-title">{{ post.title }}</h2>
       <p class="article-content">{{ post.content }}</p>
+    </div>
+    <div>
+      <footer class="article-footer">
+        <small class="text-muted post-likes">{{ post.rating }} likes </small>
+      </footer>
     </div>
   </article>
   <!-- Modal -->
@@ -63,7 +70,7 @@
             Close
           </button>
           <form
-            action="{{ url_for('posts.delete_post', post_id=post.id) }}"
+            action="{{ url_for('posts.delete_post', slug=post.slug) }}"
             method="POST"
           >
             <input class="btn btn-danger" type="submit" value="Delete" />

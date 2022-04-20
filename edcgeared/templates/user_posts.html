@@ -20,7 +20,7 @@
       <h4>
         <a
           class="article-title"
-          href="{{ url_for('posts.post', post_id=post.id) }}"
+          href="{{ url_for('posts.post', slug=post.slug) }}"
           >{{ post.title }}</a
         >
       </h4>
@@ -35,6 +35,7 @@
       <small class="text-muted"
         >{{ post.date_posted.strftime('%Y-%m-%d') }}</small
       >
+      <small class="text-muted post-likes">Likes: {{ post.rating }}</small>
     </div>
   </article>
   {% endfor %}

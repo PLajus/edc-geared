@@ -34,8 +34,9 @@ class Post(db.Model):
     title = db.Column(db.String(120), nullable=False)
     date_posted = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     content = db.Column(db.Text)
-    slug = db.Column(db.String(120), nullable=False)
+    slug = db.Column(db.String(120), nullable=False, unique=True)
     image = db.Column(db.String(20), nullable=False, default="default.jpg")
+    rating = db.Column(db.Integer, default=0)
     categories = db.relationship('Category', secondary=Post_Category, backref="posts", lazy=True)
 
     def __repr__(self):
@@ -45,7 +46,7 @@ class Category(db.Model):
     """Category DB Model"""
 
     id = db.Column(db.Integer, primary_key=True)
-    title = db.Column(db.String(75), nullable=False)
+    title = db.Column(db.String(75), nullable=False, unique=True)
 
     def __repr__(self):
         return f"<Category: {self.title}>"

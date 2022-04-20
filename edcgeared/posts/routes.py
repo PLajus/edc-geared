@@ -1,10 +1,10 @@
 import os
-from flask import render_template, url_for, flash, redirect, request, abort, Blueprint, current_app
+from flask import jsonify, render_template, url_for, flash, redirect, request, abort, Blueprint, current_app
 from flask_login import login_required, current_user
+from flask_restful import Api, Resource
 from edcgeared.models import Category, Post
 from edcgeared.posts.forms import PostForm
 from edcgeared import db
-from edcgeared.posts.forms import PostForm
 from edcgeared.posts.utils import save_post_image
 
 posts = Blueprint('posts', __name__)
@@ -20,7 +20,7 @@ def new_post():
 
     if form.validate_on_submit():
         image_file = "default.jpg"
-        
+
         if form.image.data:
             image_file = save_post_image(form.image.data)
 
@@ -37,21 +37,22 @@ def new_post():
     return render_template("create_post.html", title="New post", form=form,
                             legend="New post")
 
-@posts.route("/post/<int:post_id>")
-def post(post_id):
+
+@posts.route("/post/<string:slug>")
+def post(slug):
     """Read post"""
 
-    post = Post.query.get_or_404(post_id)
+    post = Post.query.filter_by(slug=slug).first_or_404()
 
     return render_template('post.html', title=post.title, post=post)
 
 
-@posts.route("/post/<int:post_id>/update", methods=['GET', 'POST'])
+@posts.route("/post/update/<string:slug>", methods=['GET', 'POST'])
 @login_required
-def update_post(post_id):
+def update_post(slug):
     """Update post"""
 
-    post = Post.query.get_or_404(post_id)
+    post = Post.query.filter_by(slug=slug).first_or_404()
 
     if post.author != current_user:
         abort(403)
@@ -69,6 +70,7 @@ def update_post(post_id):
 
         post.title = form.title.data
         post.content = form.content.data
+        post.slug = form.title.data.replace(" ", "-").lower()
 
         categories = db.session.query(Category).filter(Category.id.in_((form.categories.data))).all()
         post.categories = [category for category in categories]
@@ -76,7 +78,7 @@ def update_post(post_id):
         db.session.commit()
 
         flash("Post updated!", "success")
-        return redirect(url_for('posts.post', post_id=post_id))
+        return redirect(url_for('posts.post', slug=post.slug))
 
     elif request.method == "GET":
         form.title.data = post.title
@@ -87,12 +89,12 @@ def update_post(post_id):
                             form=form, legend="Update post")
 
 
-@posts.route("/post/<int:post_id>/delete", methods=['POST'])
+@posts.route("/post/delete/<string:slug>", methods=['POST'])
 @login_required
-def delete_post(post_id):
+def delete_post(slug):
     """Delete post"""
 
-    post = Post.query.get_or_404(post_id)
+    post = Post.query.filter_by(slug=slug).first_or_404()
 
     if post.author != current_user:
         abort(403)
@@ -102,3 +104,23 @@ def delete_post(post_id):
 
     flash("Post deleted!", 'success')
     return redirect(url_for('main.index'))
+
+@posts.route("/post/rate/<string:slug>", methods=['PUT'])
+def rate_post(slug):
+    """Rate a post"""
+
+    post = Post.query.filter_by(slug=slug).first_or_404()
+
+    if "rating" in request.json:
+        if request.json['rating'] == 'like':
+            post.rating += 1
+        elif request.json['rating'] == 'dislike':
+            post.rating -= 1
+        else:
+            return "Invalid request data", 400
+    else:
+        return "Invalid request data", 400
+    
+    db.session.commit()
+
+    return jsonify(post.rating)
